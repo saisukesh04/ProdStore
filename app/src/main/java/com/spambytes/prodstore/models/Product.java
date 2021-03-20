@@ -11,19 +11,17 @@ public class Product {
     private int primary_key;
 
     private long barCode;
-    private String name, dateOfManufacture;
-    private int quantity;
+    private String name;
+    private int bestBefore;
 
     public Product() {
     }
 
     @Ignore
-    public Product(int primary_key, long barCode, String name, String dateOfManufacture, int quantity) {
-        this.primary_key = primary_key;
+    public Product(long barCode, String name, int bestBefore) {
         this.barCode = barCode;
         this.name = name;
-        this.dateOfManufacture = dateOfManufacture;
-        this.quantity = quantity;
+        this.bestBefore = bestBefore;
     }
 
     public int getPrimary_key() {
@@ -50,19 +48,11 @@ public class Product {
         this.name = name;
     }
 
-    public String getDateOfManufacture() {
-        return dateOfManufacture;
+    public int getBestBefore() {
+        return bestBefore;
     }
 
-    public void setDateOfManufacture(String dateOfManufacture) {
-        this.dateOfManufacture = dateOfManufacture;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setBestBefore(int bestBefore) {
+        this.bestBefore = bestBefore;
     }
 }

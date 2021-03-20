@@ -22,4 +22,10 @@ public interface ProductDao {
 
     @Query("SELECT COUNT(*) FROM productDb")
     int countProducts();
+
+    @Query("SELECT name FROM productDb WHERE barCode = :barcode")
+    String fetchProduct(String barcode);
+
+    @Query("SELECT bestBefore FROM productDb WHERE barCode = :barcode")
+    int fetchBestBefore(String barcode);
 }

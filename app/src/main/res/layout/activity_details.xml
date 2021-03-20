@@ -14,12 +14,19 @@
         android:background="@color/colorDefaultNoteColor"
         android:elevation="16dp"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:menu="@menu/addproduct_menu"
+        android:theme="@style/ToolbarTheme"
         app:navigationIcon="@drawable/ic_back"
         app:title="Add Product"
         app:titleMargin="4dp"
-        app:titleTextColor="@color/colorNoteSubtitleText" />
+        app:titleTextColor="@color/colorNoteSubtitleText">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="9dp"
+            android:src="@drawable/ic_save_icon" />
+
+    </androidx.appcompat.widget.Toolbar>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -55,12 +62,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clickable="false"
-                    android:focusable="false"
                     android:cursorVisible="false"
+                    android:focusable="false"
                     android:fontFamily="@font/ubuntu_regular"
                     android:includeFontPadding="false"
                     android:inputType="number"
-                    android:textColor="@color/colorIcons"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/_14sdp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -71,12 +78,12 @@
                 android:layout_marginStart="16dp"
                 android:background="@drawable/background_subtitle_indicator"
                 android:elevation="16dp"
-                app:layout_constraintBottom_toBottomOf="@+id/filledNameTextField"
+                app:layout_constraintBottom_toBottomOf="@+id/filledNameField"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/filledNameTextField" />
+                app:layout_constraintTop_toTopOf="@+id/filledNameField" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/filledNameTextField"
+                android:id="@+id/filledNameField"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -96,12 +103,14 @@
                     android:id="@+id/inputProductName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:clickable="false"
                     android:cursorVisible="false"
                     android:fontFamily="@font/ubuntu_bold"
                     android:imeOptions="actionDone"
                     android:importantForAutofill="no"
                     android:includeFontPadding="false"
                     android:inputType="text"
+                    android:textColor="@color/purple_700"
                     android:textSize="@dimen/_16sdp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -117,10 +126,10 @@
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/filledNameTextField">
+                app:layout_constraintTop_toBottomOf="@+id/filledNameField">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/filledDateTextField"
+                    android:id="@+id/filledMFDField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
@@ -133,16 +142,15 @@
                     app:helperTextTextColor="@android:color/darker_gray">
 
                     <EditText
-                        android:id="@+id/textDateTime"
+                        android:id="@+id/textMFD"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:clickable="false"
                         android:cursorVisible="false"
                         android:focusable="false"
                         android:fontFamily="@font/ubuntu_regular"
                         android:includeFontPadding="false"
                         android:inputType="date"
-                        android:textColor="@color/colorIcons"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_12sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -162,22 +170,19 @@
                     app:helperTextTextColor="@android:color/darker_gray">
 
                     <EditText
-                        android:id="@+id/textBB"
+                        android:id="@+id/textBestBefore"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:clickable="false"
-                        android:cursorVisible="false"
-                        android:focusable="false"
                         android:fontFamily="@font/ubuntu_regular"
                         android:includeFontPadding="false"
                         android:inputType="number"
-                        android:textColor="@color/colorIcons"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_12sdp" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/filledQuantityTextField"
+                android:id="@+id/filledQuantityField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
@@ -197,15 +202,27 @@
                 app:layout_constraintTop_toBottomOf="@id/linearLayout">
 
                 <EditText
-                    android:id="@+id/quantityEditText"
+                    android:id="@+id/quantityText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/ubuntu_regular"
                     android:includeFontPadding="false"
                     android:inputType="number"
-                    android:textColor="@color/colorIcons"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/saveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/btn_bg"
+                android:text="Save Item"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/filledQuantityField" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

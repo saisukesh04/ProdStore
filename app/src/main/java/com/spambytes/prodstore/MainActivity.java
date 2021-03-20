@@ -36,6 +36,7 @@ import io.realm.mongodb.mongo.MongoDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static App app;
     private FirebaseAuth mAuth;
     final private String AppID = "prodstoredb-gqobq";
     private EditText barcodeEditText;
@@ -52,33 +53,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Realm.init(this);
 
-        App app = new App(new AppConfiguration.Builder(AppID).build());
-        app.loginAsync(Credentials.anonymous(), new App.Callback<User>() {
-            @Override
-            public void onResult(App.Result<User> result) {
-                if (!result.isSuccess()) {
-                    Toast.makeText(MainActivity.this, "There is an error connecting to database", Toast.LENGTH_LONG).show();
-                    Log.e("Info", result.getError().toString());
-                } else {
-                    User user = app.currentUser();
-                    Log.e("Info", String.valueOf(user) + "hi");
-                    MongoClient mongoClient = user.getMongoClient("mongodb-atlas");
-                    MongoDatabase mongoDatabase = mongoClient.getDatabase("ProdStoreDB");
-                    MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("User_Item_List");
-
-//                    mongoCollection.insertOne(new Document("barcode", user.getId())
-//                            .append("data1", "Value1").append("data2", "Value2"))
-//                            .getAsync(docResult -> {
-//                                if (docResult.isSuccess())
-//                                    Toast.makeText(MainActivity.this, "Added Document", Toast.LENGTH_LONG).show();
-//                                else {
-//                                    Toast.makeText(MainActivity.this, "Error: " + docResult.getError(), Toast.LENGTH_LONG).show();
-//                                    Log.e("Info", docResult.getError().toString());
-//                                }
-//                            });
-                }
-            }
-        });
+        app = new App(new AppConfiguration.Builder(AppID).build());
 
         addButton.setOnClickListener(v -> {
 

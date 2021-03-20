@@ -27,10 +27,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.DatePicker;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,6 +38,12 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.textfield.TextInputLayout;
+import com.spambytes.prodstore.database.ItemDatabase;
+import com.spambytes.prodstore.database.ProductDatabase;
+import com.spambytes.prodstore.models.Item;
+import com.spambytes.prodstore.models.Product;
+
+import org.bson.Document;
 
 import java.io.InputStream;
 import java.text.ParseException;
@@ -47,17 +53,34 @@ import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.mongodb.App;
+import io.realm.mongodb.Credentials;
+import io.realm.mongodb.User;
+import io.realm.mongodb.mongo.MongoClient;
+import io.realm.mongodb.mongo.MongoCollection;
+import io.realm.mongodb.mongo.MongoDatabase;
+
+import static com.spambytes.prodstore.MainActivity.app;
 
 public class DetailsActivity extends AppCompatActivity {
 
-    private EditText inputProductName, textMFD, textBB, textQuantity;
-    private TextInputLayout nameLayout, bbLayout, mfdLayout, quantityLayout;
-    private View statusIndicator;
-    private String selectColor, selectedImagePath, barcode, productName;
+    @BindView(R.id.barcodeText) EditText barcodeText;
+    @BindView(R.id.inputProductName) EditText inputProductName;
+    @BindView(R.id.textMFD) EditText textMFD;
+    @BindView(R.id.textBestBefore) EditText textBestBefore;
+    @BindView(R.id.quantityText) EditText quantityText;
+    @BindView(R.id.statusIndicator) View statusIndicator;
+    @BindView(R.id.filledNameField) TextInputLayout nameLayout;
+    @BindView(R.id.filledBBTextField) TextInputLayout bbLayout;
+    @BindView(R.id.filledMFDField) TextInputLayout mfdLayout;
+    @BindView(R.id.filledQuantityField) TextInputLayout quantityLayout;
+    @BindView(R.id.saveButton) Button saveButton;
+
+    private String barcode, selectColor, selectedImagePath;
+    private boolean productExists;
     private ImageView imageView;
     private static final int REQUEST_CODE_STORAGE_PERMISSION = 1, REQUEST_CODE_SELECT_IMAGE = 2;
 
-    @BindView(R.id.barcodeText) EditText barcodeText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,40 +93,17 @@ public class DetailsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         barcode = intent.getStringExtra("barcode");
 
-        inputProductName = findViewById(R.id.inputProductName);
-        textMFD = findViewById(R.id.textDateTime);
-        textQuantity = findViewById(R.id.quantityEditText);
-        textBB = findViewById(R.id.textBB);
-        imageView = findViewById(R.id.imageView);
-        statusIndicator = findViewById(R.id.statusIndicator);
-        nameLayout = findViewById(R.id.filledNameTextField);
-        bbLayout = findViewById(R.id.filledBBTextField);
-        mfdLayout = findViewById(R.id.filledDateTextField);
-        quantityLayout = findViewById(R.id.filledQuantityTextField);
+//        imageView = findViewById(R.id.imageView);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         barcodeText.setText(barcode);
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Don't save to database
-                startActivity(new Intent(DetailsActivity.this, MainActivity.class));
-                finish();
-            }
-        });
-
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.save) {
-                    saveDetail();
-                    return true;
-                }
-                return false;
-            }
+        toolbar.setNavigationOnClickListener(v -> {
+            //Don't save to database
+            startActivity(new Intent(DetailsActivity.this, MainActivity.class));
+            finish();
         });
 
         textMFD.setOnClickListener(v -> {
@@ -112,74 +112,82 @@ public class DetailsActivity extends AppCompatActivity {
             int mMonth = c.get(Calendar.MONTH);
             int mDay = c.get(Calendar.DAY_OF_MONTH);
 
-            DatePickerDialog datePickerDialog = new DatePickerDialog(DetailsActivity.this,
-                    new DatePickerDialog.OnDateSetListener() {
-                        @Override
-                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-
-                            textMFD.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                        }
-                    }, mYear, mMonth, mDay);
+            DatePickerDialog datePickerDialog = new DatePickerDialog(DetailsActivity.this, (view, year, monthOfYear, dayOfMonth) ->
+                    textMFD.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year), mYear, mMonth, mDay);
             datePickerDialog.show();
         });
 
         selectColor = "#333333";
         selectedImagePath = "";
 
-        //intMiscellaneous();
-        setStatusIndicator();
+        ProductDatabase productDb = ProductDatabase.getInstance(this);
+        String productName = productDb.ProductDao().fetchProduct(barcode);
 
-        //Let productName be the string of the product name obtained from the database
         if (productName == null) {
             //Entry doesn't exist in the database, ask the user to enter the data
             inputProductName.setCursorVisible(true);
-            inputProductName.setFocusable(true);
             inputProductName.setClickable(true);
-            textBB.setCursorVisible(true);
-            textBB.setFocusable(true);
-            textBB.setClickable(true);
             inputProductName.requestFocus();
             nameLayout.setError("Product details not found, kindly enter it manually");
+            productExists = false;
+        } else {
+            productExists = true;
+            inputProductName.setText(productName);
+            inputProductName.setEnabled(false);
+            textBestBefore.setEnabled(false);
+            textBestBefore.setText(String.valueOf(productDb.ProductDao().fetchBestBefore(barcode)));
+            selectColor = "#FDBE3B";
+            setStatusIndicator();
         }
 
+        saveButton.setOnClickListener(view -> saveDetail());
+
+//        intMiscellaneous();
+//        setStatusIndicator();
     }
 
     private void saveDetail() {
         InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         manager.hideSoftInputFromWindow(inputProductName.getWindowToken(), 0);
-        manager.hideSoftInputFromWindow(textBB.getWindowToken(), 0);
-        manager.hideSoftInputFromWindow(textQuantity.getWindowToken(), 0);
+        manager.hideSoftInputFromWindow(textBestBefore.getWindowToken(), 0);
+        manager.hideSoftInputFromWindow(quantityText.getWindowToken(), 0);
         inputProductName.clearFocus();
-        textBB.clearFocus();
-        textQuantity.clearFocus();
+        textBestBefore.clearFocus();
+        quantityText.clearFocus();
         nameLayout.setError(null);
         bbLayout.setError(null);
         mfdLayout.setError(null);
         quantityLayout.setError(null);
 
-        if (inputProductName.getText().toString().trim().isEmpty()) {
+        String productName = inputProductName.getText().toString();
+        String quantity = quantityText.getText().toString();
+        String manufactureDate = textMFD.getText().toString();
+        String bestBefore = textBestBefore.getText().toString();
+
+        if (productName.trim().isEmpty())
             nameLayout.setError("Product name cannot be empty");
-        } else if (textMFD.getText().toString().isEmpty()) {
+        else if (manufactureDate.isEmpty())
             mfdLayout.setError("Manufacturing date cannot be empty");
-        } else if (textBB.getText().toString().trim().isEmpty()) {
+        else if (bestBefore.trim().isEmpty())
             bbLayout.setError("Best before date cannot be empty");
-        } else if (textQuantity.getText().toString().equals("0") || textQuantity.getText().toString().isEmpty()) {
+        else if (quantity.equals("0") || quantity.isEmpty())
             quantityLayout.setError("Quantity cannot be empty or zero");
-        } else {
+        else {
             //Get product name and best before from database using barcode variable
-            //Check is same product with same MFD exists
-            productName = inputProductName.getText().toString();
+            if (!productExists)
+                saveProductToMongo(barcode, productName, bestBefore);
+
+            Date expDate = null;
             try {
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                Date mfDate = sdf.parse(textMFD.getText().toString());
-                int bestBefore = 5;
-                Toast.makeText(this, "Reminder set", Toast.LENGTH_SHORT).show();
+                Date mfDate = sdf.parse(manufactureDate);
+//                int bestBefore = 5;
 
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(mfDate);
-                calendar.add(Calendar.DAY_OF_MONTH, bestBefore);
+                calendar.add(Calendar.DAY_OF_MONTH, Integer.parseInt(bestBefore));
 
-                Date expDate = sdf.parse(sdf.format(calendar.getTime()));
+                expDate = sdf.parse(sdf.format(calendar.getTime()));
 
                 Intent intent = new Intent(DetailsActivity.this, ReminderBroadcast.class);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(DetailsActivity.this, (int) System.currentTimeMillis(), intent, 0);
@@ -199,11 +207,46 @@ public class DetailsActivity extends AppCompatActivity {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            int quantity = Integer.parseInt(textQuantity.getText().toString());
+            Item item = new Item(productName, String.valueOf(expDate), Integer.parseInt(quantity));
             //Save it to database and OnSuccess move to MainActivity
+            ItemDatabase itemDb = ItemDatabase.getInstance(DetailsActivity.this);
+            itemDb.ItemDao().insertItem(item);
+            Toast.makeText(DetailsActivity.this, "Item added to database",Toast.LENGTH_LONG).show();
             startActivity(new Intent(DetailsActivity.this, MainActivity.class));
             finish();
         }
+    }
+
+    private void saveProductToMongo(String barcodeText, String productName, String bestBefore) {
+        app.loginAsync(Credentials.anonymous(), new App.Callback<User>() {
+            @Override
+            public void onResult(App.Result<User> result) {
+                if (!result.isSuccess()) {
+                    Toast.makeText(DetailsActivity.this, "There is an error connecting to database", Toast.LENGTH_LONG).show();
+                    Log.e("Info", result.getError().toString());
+                } else {
+                    User user = app.currentUser();
+                    Log.e("Info", "User: " + user);
+                    MongoClient mongoClient = user.getMongoClient("mongodb-atlas");
+                    MongoDatabase mongoDatabase = mongoClient.getDatabase("ProdStoreDB");
+                    MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("User_Item_List");
+
+                    mongoCollection.insertOne(new Document("userId", user.getId())
+                            .append("barcode", barcodeText).append("productName", productName)
+                            .append("bestBefore", bestBefore))
+                            .getAsync(docResult -> {
+                                if (docResult.isSuccess()) {
+                                    Toast.makeText(DetailsActivity.this, "Added to database", Toast.LENGTH_LONG).show();
+                                    Product product = new Product(Long.parseLong(barcodeText), productName, Integer.parseInt(bestBefore));
+                                    ProductDatabase.getInstance(DetailsActivity.this).ProductDao().insertProduct(product);
+                                }else {
+                                    Toast.makeText(DetailsActivity.this, "Error: " + docResult.getError(), Toast.LENGTH_LONG).show();
+                                    Log.e("Info", docResult.getError().toString());
+                                }
+                            });
+                }
+            }
+        });
     }
 
     private void createNotificationChannel() {
@@ -318,8 +361,6 @@ public class DetailsActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
     private void setStatusIndicator() {
