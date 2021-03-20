@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EnterTheDetailsActivity"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorPrimary"
+    tools:context=".DetailsActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -26,7 +26,6 @@
         android:layout_marginBottom="@dimen/_40sdp"
         android:clipToPadding="false"
         android:paddingBottom="@dimen/_10sdp">
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -182,9 +181,8 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
-<!--     <include-->
-<!--        android:id="@+id/include"-->
-<!--        layout="@layout/layoutmiscellenous" />-->
-
+    <!--     <include-->
+    <!--        android:id="@+id/include"-->
+    <!--        layout="@layout/layoutmiscellenous" />-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

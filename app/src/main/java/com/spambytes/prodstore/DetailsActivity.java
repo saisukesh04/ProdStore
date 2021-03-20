@@ -2,7 +2,6 @@ package com.spambytes.prodstore;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -46,9 +45,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class EnterTheDetailsActivity extends AppCompatActivity {
+public class DetailsActivity extends AppCompatActivity {
 
-    private EditText  inputProductName, textMFD, textBB, textQuantity;
+    private EditText inputProductName, textMFD, textBB, textQuantity;
     private TextInputLayout nameLayout, bbLayout, mfdLayout, quantityLayout;
     private View statusIndicator;
     private String selectColor, selectedImagePath, barcode, productName;
@@ -58,7 +57,7 @@ public class EnterTheDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.enterthedetailsactivity);
+        setContentView(R.layout.activity_details);
         createNotificationChannel();
 
         Intent intent = getIntent();
@@ -82,7 +81,7 @@ public class EnterTheDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Don't save to database
-                startActivity(new Intent(EnterTheDetailsActivity.this, MainActivity.class));
+                startActivity(new Intent(DetailsActivity.this, MainActivity.class));
                 finish();
             }
         });
@@ -90,7 +89,7 @@ public class EnterTheDetailsActivity extends AppCompatActivity {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.save){
+                if (item.getItemId() == R.id.save) {
                     saveDetail();
                     return true;
                 }
@@ -98,26 +97,21 @@ public class EnterTheDetailsActivity extends AppCompatActivity {
             }
         });
 
-        textMFD.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Calendar c = Calendar.getInstance();
-                int mYear = c.get(Calendar.YEAR);
-                int mMonth = c.get(Calendar.MONTH);
-                int mDay = c.get(Calendar.DAY_OF_MONTH);
+        textMFD.setOnClickListener(v -> {
+            final Calendar c = Calendar.getInstance();
+            int mYear = c.get(Calendar.YEAR);
+            int mMonth = c.get(Calendar.MONTH);
+            int mDay = c.get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(EnterTheDetailsActivity.this,
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year,
-                                                  int monthOfYear, int dayOfMonth) {
+            DatePickerDialog datePickerDialog = new DatePickerDialog(DetailsActivity.this,
+                    new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
-                                textMFD.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-
-                            }
-                        }, mYear, mMonth, mDay);
-                datePickerDialog.show();
-            }
+                            textMFD.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                        }
+                    }, mYear, mMonth, mDay);
+            datePickerDialog.show();
         });
 
         selectColor = "#333333";
@@ -141,7 +135,7 @@ public class EnterTheDetailsActivity extends AppCompatActivity {
 
     }
 
-    private void saveDetail(){
+    private void saveDetail() {
         InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         manager.hideSoftInputFromWindow(inputProductName.getWindowToken(), 0);
         manager.hideSoftInputFromWindow(textBB.getWindowToken(), 0);
@@ -154,15 +148,15 @@ public class EnterTheDetailsActivity extends AppCompatActivity {
         mfdLayout.setError(null);
         quantityLayout.setError(null);
 
-        if(inputProductName.getText().toString().trim().isEmpty()) {
+        if (inputProductName.getText().toString().trim().isEmpty()) {
             nameLayout.setError("Product name cannot be empty");
-        }else if (textMFD.getText().toString().isEmpty()){
+        } else if (textMFD.getText().toString().isEmpty()) {
             mfdLayout.setError("Manufacturing date cannot be empty");
-        }else if (textBB.getText().toString().trim().isEmpty()) {
+        } else if (textBB.getText().toString().trim().isEmpty()) {
             bbLayout.setError("Best before date cannot be empty");
-        }else if (textQuantity.getText().toString().equals("0") || textQuantity.getText().toString().isEmpty()){
+        } else if (textQuantity.getText().toString().equals("0") || textQuantity.getText().toString().isEmpty()) {
             quantityLayout.setError("Quantity cannot be empty or zero");
-        }else{
+        } else {
             //Get product name and best before from database using barcode variable
             //Check is same product with same MFD exists
             productName = inputProductName.getText().toString();
@@ -178,8 +172,8 @@ public class EnterTheDetailsActivity extends AppCompatActivity {
 
                 Date expDate = sdf.parse(sdf.format(calendar.getTime()));
 
-                Intent intent = new Intent(EnterTheDetailsActivity.this, ReminderBroadcast.class);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(EnterTheDetailsActivity.this, (int) System.currentTimeMillis(), intent, 0);
+                Intent intent = new Intent(DetailsActivity.this, ReminderBroadcast.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(DetailsActivity.this, (int) System.currentTimeMillis(), intent, 0);
 
                 AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
@@ -193,19 +187,18 @@ public class EnterTheDetailsActivity extends AppCompatActivity {
 
                 alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 
-            }catch (ParseException e){
+            } catch (ParseException e) {
                 e.printStackTrace();
             }
             int quantity = Integer.parseInt(textQuantity.getText().toString());
-            //Save it to database
-            //On success move to MainActivity
-            startActivity(new Intent(EnterTheDetailsActivity.this, MainActivity.class));
+            //Save it to database and OnSuccess move to MainActivity
+            startActivity(new Intent(DetailsActivity.this, MainActivity.class));
             finish();
         }
     }
 
-    private void createNotificationChannel(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "ReminderChannel";
             String description = "Channel for reminder";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
@@ -217,16 +210,16 @@ public class EnterTheDetailsActivity extends AppCompatActivity {
         }
     }
 
-    private void intMiscellaneous(){
+    private void intMiscellaneous() {
         final LinearLayout layoutMiscellenous = findViewById(R.id.layoutMiscellenous);
         final BottomSheetBehavior<LinearLayout> bottomSheetBehavior = BottomSheetBehavior.from(layoutMiscellenous);
         layoutMiscellenous.findViewById(R.id.textMiscellenous).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED){
+                if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
-                }else{
+                } else {
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 }
             }
@@ -251,32 +244,26 @@ public class EnterTheDetailsActivity extends AppCompatActivity {
 
             }
         });
-        layoutMiscellenous.findViewById(R.id.viewColor2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectColor = "#FDBE3B";
-                imageColor1.setImageResource(0);
-                imageColor2.setImageResource(R.drawable.ic_done);
-                imageColor3.setImageResource(0);
-                imageColor4.setImageResource(0);
-                imageColor5.setImageResource(0);
-                setStatusIndicator();
-
-            }
+        layoutMiscellenous.findViewById(R.id.viewColor2).setOnClickListener(v -> {
+            selectColor = "#FDBE3B";
+            imageColor1.setImageResource(0);
+            imageColor2.setImageResource(R.drawable.ic_done);
+            imageColor3.setImageResource(0);
+            imageColor4.setImageResource(0);
+            imageColor5.setImageResource(0);
+            setStatusIndicator();
         });
-        layoutMiscellenous.findViewById(R.id.viewColor3).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectColor = "#FF4842";
-                imageColor1.setImageResource(0);
-                imageColor2.setImageResource(0);
-                imageColor3.setImageResource(R.drawable.ic_done);
-                imageColor4.setImageResource(0);
-                imageColor5.setImageResource(0);
-                setStatusIndicator();
 
-            }
+        layoutMiscellenous.findViewById(R.id.viewColor3).setOnClickListener(v -> {
+            selectColor = "#FF4842";
+            imageColor1.setImageResource(0);
+            imageColor2.setImageResource(0);
+            imageColor3.setImageResource(R.drawable.ic_done);
+            imageColor4.setImageResource(0);
+            imageColor5.setImageResource(0);
+            setStatusIndicator();
         });
+
         layoutMiscellenous.findViewById(R.id.viewColor4).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -287,9 +274,9 @@ public class EnterTheDetailsActivity extends AppCompatActivity {
                 imageColor4.setImageResource(R.drawable.ic_done);
                 imageColor5.setImageResource(0);
                 setStatusIndicator();
-
             }
         });
+
         layoutMiscellenous.findViewById(R.id.viewColor5).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -308,15 +295,14 @@ public class EnterTheDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                if(ContextCompat.checkSelfPermission(
+                if (ContextCompat.checkSelfPermission(
                         getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED){
-                    ActivityCompat.requestPermissions(
-                            EnterTheDetailsActivity.this,new
-                                    String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(DetailsActivity.this,
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                             REQUEST_CODE_STORAGE_PERMISSION
                     );
-                }else{
+                } else {
                     selectImage();
                 }
 
@@ -326,15 +312,15 @@ public class EnterTheDetailsActivity extends AppCompatActivity {
 
 
     }
-    private void setStatusIndicator(){
+
+    private void setStatusIndicator() {
         GradientDrawable gradientDrawable = (GradientDrawable) statusIndicator.getBackground();
         gradientDrawable.setColor(Color.parseColor(selectColor));
     }
 
-    private void selectImage()
-    {
+    private void selectImage() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        if(intent.resolveActivity(getPackageManager()) != null){
+        if (intent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(intent, REQUEST_CODE_SELECT_IMAGE);
         }
     }
@@ -342,10 +328,10 @@ public class EnterTheDetailsActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == REQUEST_CODE_STORAGE_PERMISSION && grantResults.length > 0){
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        if (requestCode == REQUEST_CODE_STORAGE_PERMISSION && grantResults.length > 0) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 selectImage();
-            }else {
+            } else {
                 Toast.makeText(this, "Permission Denied!! ", Toast.LENGTH_SHORT).show();
             }
         }
@@ -354,10 +340,10 @@ public class EnterTheDetailsActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_CODE_SELECT_IMAGE && resultCode == RESULT_OK){
-            if(data != null){
+        if (requestCode == REQUEST_CODE_SELECT_IMAGE && resultCode == RESULT_OK) {
+            if (data != null) {
                 Uri selectedImageUri = data.getData();
-                if (selectedImageUri != null){
+                if (selectedImageUri != null) {
                     try {
                         InputStream inputStream = getContentResolver().openInputStream(selectedImageUri);
                         Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
@@ -366,19 +352,20 @@ public class EnterTheDetailsActivity extends AppCompatActivity {
 
                         selectedImagePath = getPathFromUri(selectedImageUri);
 
-                    }catch (Exception exception){
-                        Toast.makeText(this,exception.getMessage(), Toast.LENGTH_SHORT).show();
+                    } catch (Exception exception) {
+                        Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
         }
     }
-    private String getPathFromUri(Uri contentUri){
+
+    private String getPathFromUri(Uri contentUri) {
         String filePath;
-        Cursor cursor = getContentResolver().query(contentUri,null,null,null,null);
-        if (cursor == null){
+        Cursor cursor = getContentResolver().query(contentUri, null, null, null, null);
+        if (cursor == null) {
             filePath = contentUri.getPath();
-        }else {
+        } else {
             cursor.moveToFirst();
             int index = cursor.getColumnIndex("_data");
             filePath = cursor.getString(index);
@@ -391,7 +378,7 @@ public class EnterTheDetailsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        new AlertDialog.Builder(EnterTheDetailsActivity.this)
+        new AlertDialog.Builder(DetailsActivity.this)
                 .setIcon(android.R.drawable.stat_sys_warning)
                 .setTitle("Save product?")
                 .setMessage("If you discard, you won't be reminded if this product expires")
@@ -405,7 +392,7 @@ public class EnterTheDetailsActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //Don't save to database
-                        startActivity(new Intent(EnterTheDetailsActivity.this, MainActivity.class));
+                        startActivity(new Intent(DetailsActivity.this, MainActivity.class));
                         finish();
                     }
                 })

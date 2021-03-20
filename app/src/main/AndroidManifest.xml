@@ -16,7 +16,7 @@
         <receiver android:name=".ReminderBroadcast" />
         <activity android:name=".RegisterActivity"/>
         <activity android:name=".LoginActivity" />
-        <activity android:name=".EnterTheDetailsActivity"
+        <activity android:name=".DetailsActivity"
             android:parentActivityName=".MainActivity"/>
         <activity android:name=".MainActivity">
             <intent-filter>

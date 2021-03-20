@@ -6,10 +6,11 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     tools:context=".MainActivity">
+
     <TextView
+        android:id="@+id/expiryDateReminder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/expiryDateReminder"
         android:layout_marginStart="@dimen/_12sdp"
         android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginEnd="@dimen/_12sdp"
@@ -19,10 +20,11 @@
         android:textColor="@color/white"
         android:textSize="@dimen/_20sdp"
         app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
+        android:id="@+id/layoutSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/layoutSearch"
         android:layout_marginStart="@dimen/_8sdp"
         android:layout_marginTop="@dimen/_15sdp"
         android:layout_marginEnd="@dimen/_8sdp"
@@ -32,62 +34,63 @@
         android:paddingStart="@dimen/_10sdp"
         android:paddingEnd="@dimen/_10sdp"
         app:layout_constraintTop_toBottomOf="@+id/expiryDateReminder">
+
         <ImageView
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
+            android:layout_marginEnd="8dp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_search"
             app:tint="@color/colorSearchIcon" />
+
         <EditText
             android:id="@+id/inputSearch"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_35sdp"
             android:background="@null"
             android:fontFamily="@font/ubuntu_regular"
-            android:hint="Search product name"
+            android:hint=" Search product name"
             android:imeOptions="actionDone"
             android:importantForAutofill="no"
             android:includeFontPadding="false"
             android:inputType="text"
             android:textColor="@color/white"
             android:textColorHint="@color/colorTextHint"
-            android:textSize="@dimen/_13sdp"/>
+            android:textSize="@dimen/_13sdp" />
 
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listRecyclerView"
-        android:layout_width="409dp"
-        android:layout_height="542dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="24dp"
         android:clipToPadding="false"
         android:paddingStart="0dp"
         android:paddingLeft="0dp"
         android:paddingEnd="@dimen/_12sdp"
         android:paddingRight="@dimen/_12sdp"
         android:paddingBottom="@dimen/_12sdp"
-        app:layout_constraintBottom_toTopOf="@+id/imageAddButton"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layoutSearch"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/layoutSearch" />
 
     <ImageView
         android:id="@+id/imageAddButton"
         android:layout_width="@dimen/_40sdp"
         android:layout_height="@dimen/_40sdp"
         android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/background_add_button"
         android:contentDescription="@string/app_name"
         android:padding="@dimen/_5sdp"
         android:src="@drawable/ic_baseline_add_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-
-        app:layout_constraintVertical_bias="0.976"
         app:tint="@color/colorPrimary" />
 
 
