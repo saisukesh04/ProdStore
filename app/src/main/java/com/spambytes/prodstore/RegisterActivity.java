@@ -12,6 +12,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -27,6 +28,8 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        ButterKnife.bind(this);
 
         registerBtn.setOnClickListener(v -> {
             String email = emailREditText.getText().toString();
