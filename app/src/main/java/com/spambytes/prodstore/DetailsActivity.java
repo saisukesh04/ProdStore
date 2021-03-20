@@ -45,6 +45,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class DetailsActivity extends AppCompatActivity {
 
     private EditText inputProductName, textMFD, textBB, textQuantity;
@@ -54,11 +57,15 @@ public class DetailsActivity extends AppCompatActivity {
     private ImageView imageView;
     private static final int REQUEST_CODE_STORAGE_PERMISSION = 1, REQUEST_CODE_SELECT_IMAGE = 2;
 
+    @BindView(R.id.barcodeText) EditText barcodeText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         createNotificationChannel();
+
+        ButterKnife.bind(this);
 
         Intent intent = getIntent();
         barcode = intent.getStringExtra("barcode");
@@ -76,6 +83,8 @@ public class DetailsActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        barcodeText.setText(barcode);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -377,7 +386,6 @@ public class DetailsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         new AlertDialog.Builder(DetailsActivity.this)
                 .setIcon(android.R.drawable.stat_sys_warning)
                 .setTitle("Save product?")
