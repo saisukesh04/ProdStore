@@ -6,125 +6,185 @@
     android:layout_height="match_parent"
     tools:context=".EnterTheDetailsActivity"
     android:background="@color/colorPrimary">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorDefaultNoteColor"
+        android:elevation="16dp"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:menu="@menu/addproduct_menu"
+        app:navigationIcon="@drawable/ic_back"
+        app:title="Add Product"
+        app:titleMargin="4dp" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/_40sdp"
         android:clipToPadding="false"
         android:paddingBottom="@dimen/_10sdp">
+
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:animateLayoutChanges="true">
-            <ImageView
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:id="@+id/imageBack"
-                android:layout_marginStart="@dimen/_6sdp"
-                android:layout_marginEnd="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_back"
-                app:tint="@color/colorIcons"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginLeft="@dimen/_6sdp"
-                android:layout_marginRight="@dimen/_12sdp" />
 
-            <ImageView
-                android:id="@+id/imageSave"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:layout_marginEnd="25dp"
-                android:layout_marginRight="25dp"
-                android:background="@drawable/background_done_button"
-                android:contentDescription="@string/app_name"
-                android:padding="@dimen/_40sdp"
-                android:src="@drawable/ic_done"
-
-                app:layout_constraintBottom_toBottomOf="@+id/imageBack"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/imageBack"
-                app:tint="@color/colorIcons" />
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_35sdp"
-                android:id="@+id/inputProductName"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:layout_marginEnd="@dimen/_12sdp"
-                android:background="@null"
-                android:fontFamily="@font/ubuntu_bold"
-                android:hint="Product Name"
-                android:imeOptions="actionDone"
-                android:importantForAutofill="no"
-                android:includeFontPadding="false"
-                android:inputType="text"
-                android:textColor="@color/white"
-                android:textColorHint="@color/colorTextHint"
-                android:textSize="@dimen/_16sdp"
-                app:layout_constraintTop_toBottomOf="@+id/imageBack"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/textDateTime"
-                android:fontFamily="@font/ubuntu_regular"
-                android:includeFontPadding="false"
-                android:textColor="@color/colorIcons"
-                android:textSize="@dimen/_10sdp"
-                app:layout_constraintEnd_toEndOf="@+id/inputProductName"
-                app:layout_constraintStart_toStartOf="@+id/inputProductName"
-                app:layout_constraintTop_toBottomOf="@+id/inputProductName"/>
-            <EditText
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/status"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:layout_marginEnd="@dimen/_12sdp"
-                android:background="@null"
-                android:fontFamily="@font/ubuntu_medium"
-                android:includeFontPadding="false"
-                android:paddingTop="@dimen/_8sdp"
-                android:textColor="@color/colorTextSubtitle"
-                android:textSize="@dimen/_13sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/statusIndicator"
-                app:layout_constraintTop_toBottomOf="@+id/textDateTime"
-                android:layout_marginLeft="@dimen/_15sdp"
-                android:layout_marginRight="@dimen/_12sdp" />
             <View
+                android:id="@+id/statusIndicator"
                 android:layout_width="@dimen/_5sdp"
                 android:layout_height="0dp"
-                android:id="@+id/statusIndicator"
-                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginStart="16dp"
                 android:background="@drawable/background_subtitle_indicator"
-                app:layout_constraintBottom_toBottomOf="@+id/status"
+                android:elevation="16dp"
+                app:layout_constraintBottom_toBottomOf="@+id/filledNameTextField"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/status"
-                android:layout_marginLeft="@dimen/_12sdp" />
-            <ImageView
+                app:layout_constraintTop_toTopOf="@+id/filledNameTextField" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/filledNameTextField"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="85dp"
+                android:layout_marginEnd="16dp"
+                android:elevation="16dp"
+                android:fontFamily="@font/ubuntu_bold"
+                android:gravity="center"
+                android:hint="Product Name"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusTopStart="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/statusIndicator"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <EditText
+                    android:id="@+id/inputProductName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:fontFamily="@font/ubuntu_bold"
+                    android:imeOptions="actionDone"
+                    android:importantForAutofill="no"
+                    android:includeFontPadding="false"
+                    android:inputType="text"
+                    android:textSize="@dimen/_16sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/imageOfProduct"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:layout_marginEnd="@dimen/_12sdp"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/app_name"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/status"
-                />
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:elevation="16dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/filledNameTextField">
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/filledDateTextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:elevation="16dp"
+                    android:gravity="center"
+                    android:hint="Manufacturing Date"
+                    app:boxCornerRadiusTopEnd="8dp"
+                    app:boxCornerRadiusTopStart="8dp"
+                    app:helperTextTextColor="@android:color/darker_gray">
 
+                    <EditText
+                        android:id="@+id/textDateTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:fontFamily="@font/ubuntu_regular"
+                        android:includeFontPadding="false"
+                        android:inputType="date"
+                        android:textColor="@color/colorIcons"
+                        android:textSize="@dimen/_12sdp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/filledBBTextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:elevation="16dp"
+                    android:gravity="center"
+                    android:hint="Best Before"
+                    app:boxCornerRadiusTopEnd="8dp"
+                    app:boxCornerRadiusTopStart="8dp"
+                    app:helperText="Months"
+                    app:helperTextEnabled="true"
+                    app:helperTextTextColor="@android:color/darker_gray">
+
+                    <EditText
+                        android:id="@+id/textBB"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:fontFamily="@font/ubuntu_regular"
+                        android:includeFontPadding="false"
+                        android:inputType="number"
+                        android:textColor="@color/colorIcons"
+                        android:textSize="@dimen/_12sdp" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/filledQuantityTextField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="12dp"
+                android:layout_weight="2"
+                android:elevation="16dp"
+                android:gravity="center"
+                android:hint="Quantity"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusTopStart="8dp"
+                app:helperText="If MFDs are different, consider adding them as a new product"
+                app:helperTextEnabled="true"
+                app:helperTextTextColor="@android:color/darker_gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/linearLayout">
+
+                <EditText
+                    android:id="@+id/quantityEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/ubuntu_regular"
+                    android:includeFontPadding="false"
+                    android:inputType="number"
+                    android:textColor="@color/colorIcons"
+                    android:textSize="@dimen/_12sdp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
     </ScrollView>
 
-    <include layout="@layout/layout_miscellenous" />
+<!--     <include-->
+<!--        android:id="@+id/include"-->
+<!--        layout="@layout/layoutmiscellenous" />-->
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

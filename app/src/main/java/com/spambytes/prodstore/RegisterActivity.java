@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,7 +39,7 @@ public class RegisterActivity extends AppCompatActivity {
             filledREmailTextField.setError(null);
             filledRPasswordTextField.setError(null);
             filledConfirmPasswordTextField.setError(null);
-            if (email.isEmpty()){
+            if (email.isEmpty()) {
                 filledREmailTextField.setError("Field cannot be empty");
             }else if (password.isEmpty()){
                 filledRPasswordTextField.setError("Field cannot be empty");

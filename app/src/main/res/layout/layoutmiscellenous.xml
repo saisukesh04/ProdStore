@@ -1,80 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    android:id="@+id/layoutMiscellenous"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/layoutMiscellenous"
     android:background="@drawable/background_miscellenous"
+    android:elevation="16dp"
+    android:orientation="vertical"
     app:layout_behavior="@string/bottom_sheet_behavior">
+
     <TextView
+        android:id="@+id/textMiscellenous"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_40sdp"
-        android:id="@+id/textMiscellenous"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/ubuntu_medium"
         android:gravity="center"
         android:includeFontPadding="false"
-        android:text="Miscellaneous"
+        android:text="Miscellaneous Options"
         android:textColor="@color/white"
-        android:textSize="@dimen/_13sdp"/>
+        android:textSize="@dimen/_13sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/layout_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/layout_color"
         android:layout_gravity="center_vertical"
-        android:orientation="horizontal">
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textMiscellenous">
+
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1">
+
             <View
-                android:layout_width="@dimen/_35sdp"
-                android:layout_height="@dimen/_35sdp"
                 android:id="@+id/viewColor1"
-                android:background="@drawable/background_color_1"/>
-            <ImageView
                 android:layout_width="@dimen/_35sdp"
                 android:layout_height="@dimen/_35sdp"
+                android:background="@drawable/background_color_1" />
+
+            <ImageView
                 android:id="@+id/imageColor1"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="@dimen/_35sdp"
                 android:contentDescription="@string/app_name"
                 android:padding="@dimen/_10sdp"
                 android:src="@drawable/ic_done"
                 app:tint="@color/white" />
 
         </FrameLayout>
+
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1">
+
             <View
-                android:layout_width="@dimen/_35sdp"
-                android:layout_height="@dimen/_35sdp"
                 android:id="@+id/viewColor2"
-                android:background="@drawable/background_color_2"/>
-            <ImageView
                 android:layout_width="@dimen/_35sdp"
                 android:layout_height="@dimen/_35sdp"
+                android:background="@drawable/background_color_2" />
+
+            <ImageView
                 android:id="@+id/imageColor2"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="@dimen/_35sdp"
                 android:contentDescription="@string/app_name"
                 android:padding="@dimen/_10sdp"
                 app:tint="@color/white" />
 
         </FrameLayout>
+
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1">
+
             <View
-                android:layout_width="@dimen/_35sdp"
-                android:layout_height="@dimen/_35sdp"
                 android:id="@+id/viewColor3"
-                android:background="@drawable/background_color_3"/>
-            <ImageView
                 android:layout_width="@dimen/_35sdp"
                 android:layout_height="@dimen/_35sdp"
+                android:background="@drawable/background_color_3" />
+
+            <ImageView
                 android:id="@+id/imageColor3"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="@dimen/_35sdp"
                 android:contentDescription="@string/app_name"
                 android:padding="@dimen/_10sdp"
                 app:tint="@color/white" />
@@ -85,33 +106,38 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1">
+
             <View
-                android:layout_width="@dimen/_35sdp"
-                android:layout_height="@dimen/_35sdp"
                 android:id="@+id/viewColor4"
-                android:background="@drawable/background_color_4"/>
-            <ImageView
                 android:layout_width="@dimen/_35sdp"
                 android:layout_height="@dimen/_35sdp"
+                android:background="@drawable/background_color_4" />
+
+            <ImageView
                 android:id="@+id/imageColor4"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="@dimen/_35sdp"
                 android:contentDescription="@string/app_name"
                 android:padding="@dimen/_10sdp"
                 app:tint="@color/white" />
 
         </FrameLayout>
+
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1">
+
             <View
-                android:layout_width="@dimen/_35sdp"
-                android:layout_height="@dimen/_35sdp"
                 android:id="@+id/viewColor5"
-                android:background="@drawable/background_color_5"/>
-            <ImageView
                 android:layout_width="@dimen/_35sdp"
                 android:layout_height="@dimen/_35sdp"
+                android:background="@drawable/background_color_5" />
+
+            <ImageView
                 android:id="@+id/imageColor5"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="@dimen/_35sdp"
                 android:contentDescription="@string/app_name"
                 android:padding="@dimen/_10sdp"
                 app:tint="@color/white" />
@@ -122,40 +148,57 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:fontFamily="@font/ubuntu_medium"
+            android:gravity="center"
             android:includeFontPadding="false"
-            android:text="pick color"
+            android:text="Pick status color"
             android:textColor="@color/white"
-            android:textSize="@dimen/_10sdp"
-            android:gravity="center"/>
+            android:textSize="@dimen/_10sdp" />
 
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/layoutAddImage"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_35sdp"
-        android:layout_margin="@dimen/_10sdp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        tools:ignore="UseCompoundDrawables">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_color"
+        tools:ignore="UseCompoundDrawables">>
+
         <ImageView
             android:layout_width="@dimen/_22sdp"
             android:layout_height="@dimen/_22sdp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_image"
             app:tint="@color/colorIcons" />
+
         <TextView
+            android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
             android:fontFamily="@font/ubuntu_medium"
             android:includeFontPadding="false"
             android:text="Add Product's Image"
             android:textColor="@color/colorIcons"
-            android:textSize="@dimen/_14sdp"
-            android:layout_marginLeft="@dimen/_10sdp" />
-
-
-
-
+            android:textSize="@dimen/_14sdp" />
     </LinearLayout>
-</LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageOfProduct"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/app_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutAddImage" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
