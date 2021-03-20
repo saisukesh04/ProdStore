@@ -55,9 +55,9 @@
         android:paddingTop="10dp"
         android:paddingEnd="10dp"
         android:paddingBottom="10dp"
+        android:textColor="@color/white"
         android:textColorHint="@color/colorTextHint"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.213"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginText" />
 
@@ -66,22 +66,21 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
         android:background="@drawable/input_bg"
         android:drawableStart="@drawable/ic_security"
         android:drawablePadding="10dp"
         android:ems="10"
         android:hint="Password"
+        android:inputType="textPassword"
         android:paddingStart="20dp"
         android:paddingTop="10dp"
         android:paddingEnd="10dp"
         android:paddingBottom="10dp"
+        android:textColor="@color/white"
         android:textColorHint="@color/colorTextHint"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.213"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailEditText" />
 
@@ -90,10 +89,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
         android:layout_marginTop="56dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
         android:background="@drawable/btn_bg"
         android:fontFamily="@font/ubuntu_bold"
         android:paddingStart="20dp"
@@ -101,7 +98,7 @@
         android:paddingEnd="10dp"
         android:paddingBottom="10dp"
         android:text="Login"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordEditText"
@@ -115,8 +112,7 @@
         android:fontFamily="@font/ubuntu_regular"
         android:text="Don't have an ACCOUNT? "
         android:textColor="@color/colorTextSubtitle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.349"
+        app:layout_constraintEnd_toEndOf="@id/loginButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginButton" />
 
@@ -125,12 +121,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:layout_marginStart="4dp"
         android:fontFamily="@font/ubuntu_regular"
         android:text="Register"
         android:textColor="#03A9F4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.066"
         app:layout_constraintStart_toEndOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/loginButton" />
+
+    <ProgressBar
+        android:id="@+id/loginProgressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/purple_500"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

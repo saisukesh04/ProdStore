@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -20,6 +22,7 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.clickRegister) TextView registerButton;
     @BindView(R.id.emailEditText) EditText emailEditText;
     @BindView(R.id.passwordEditText) EditText passwordEditText;
+    @BindView(R.id.loginProgressBar) ProgressBar loginProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +43,15 @@ public class LoginActivity extends AppCompatActivity {
             String email = emailEditText.getText().toString();
             String password = passwordEditText.getText().toString();
             if (!email.isEmpty() && !password.isEmpty()) {
+                loginProgressBar.setVisibility(View.VISIBLE);
                 firebaseAuth.signInWithEmailAndPassword(email, password).addOnSuccessListener(authResult -> {
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
 
+                }).addOnFailureListener(e -> {
+                    Snackbar.make(v, "Error during login. Please try again!",Snackbar.LENGTH_LONG).show();
+                    loginProgressBar.setVisibility(View.INVISIBLE);
                 });
             } else if (email.isEmpty()) {
                 Snackbar.make(v, "Email field cannot be empty", Snackbar.LENGTH_LONG).show();

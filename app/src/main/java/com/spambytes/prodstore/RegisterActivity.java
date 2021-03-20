@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -20,6 +22,7 @@ public class RegisterActivity extends AppCompatActivity {
     @BindView(R.id.passwordREditText) EditText passwordREditText;
     @BindView(R.id.confirmPasswordEditText) EditText confirmPasswordEditText;
     @BindView(R.id.registerBtn) Button registerBtn;
+    @BindView(R.id.regProgressBar) ProgressBar regProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,7 @@ public class RegisterActivity extends AppCompatActivity {
                 Snackbar.make(v, "Passwords don't match", Snackbar.LENGTH_LONG).show();
             else {
                 FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+                regProgressBar.setVisibility(View.VISIBLE);
                 firebaseAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(RegisterActivity.this, task -> {
                             if (task.isSuccessful()) {
@@ -48,6 +52,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                                 finish();
                             } else {
+                                regProgressBar.setVisibility(View.INVISIBLE);
                                 Toast.makeText(RegisterActivity.this, "Registration failed. Try again", Toast.LENGTH_LONG).show();
                             }
                         });
