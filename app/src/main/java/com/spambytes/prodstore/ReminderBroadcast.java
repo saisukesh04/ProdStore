@@ -23,22 +23,22 @@ public class ReminderBroadcast extends BroadcastReceiver {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "notifyUs")
                 .setSmallIcon(R.drawable.ic_save_icon)
-                .setContentTitle("Hello there")
-                .setContentText("This is a test notification")
+                .setContentTitle("Expiry Reminder")
+                .setContentText("Some of your products are expiring in a week!")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setGroup("Expiry")
                 .setAutoCancel(true);
                 //.setContentIntent(resultPendingIntent);
 
         NotificationCompat.Builder summaryNotification = new NotificationCompat.Builder(context, "notifyUs")
-                .setContentTitle("Things expiring")
-                .setContentText("2 items")
+                .setContentTitle("Products expiring")
+                .setContentText("Some items are expiring in a week")
                 .setSmallIcon(R.drawable.ic_save_icon)
                 .setStyle(new NotificationCompat.InboxStyle()
-                            .addLine("Check this out")
-                            .addLine("Hey there")
-                            .setBigContentTitle("2 expiring")
-                            .setSummaryText("Reminder app"))
+                            .addLine("Reminder")
+                            .addLine("Check out the expiring products in the app homepage")
+                            .setBigContentTitle("Products expiring")
+                            .setSummaryText("Products expiring"))
                 .setGroup("Expiry")
                 .setGroupSummary(true);
 

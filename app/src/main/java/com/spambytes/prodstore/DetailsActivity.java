@@ -187,7 +187,7 @@ public class DetailsActivity extends AppCompatActivity {
 
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(mfDate);
-                calendar.add(Calendar.DAY_OF_MONTH, Integer.parseInt(bestBefore)*30);
+                calendar.add(Calendar.DAY_OF_MONTH, (Integer.parseInt(bestBefore)*30));
 
                 expDate = sdf.parse(sdf.format(calendar.getTime()));
 
@@ -198,6 +198,11 @@ public class DetailsActivity extends AppCompatActivity {
 
                 //Calendar calendar = Calendar.getInstance();
                 calendar.setTime(expDate);
+                calendar.add(Calendar.DAY_OF_MONTH, -7);
+
+                Date remDate = sdf.parse(sdf.format(calendar.getTime()));
+
+                calendar.setTime(remDate);
                 calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR));
                 calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
                 calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_YEAR));
