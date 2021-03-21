@@ -58,7 +58,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                     }).setNegativeButton("No", (dialog, which) ->
                         Toast.makeText(context, "Please be sure from next time :)", Toast.LENGTH_LONG).show())
                     .show();
-
             return true;
         });
     }
