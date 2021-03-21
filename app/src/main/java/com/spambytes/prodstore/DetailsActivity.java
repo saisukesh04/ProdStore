@@ -187,7 +187,7 @@ public class DetailsActivity extends AppCompatActivity {
 
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(mfDate);
-                calendar.add(Calendar.DAY_OF_MONTH, Integer.parseInt(bestBefore));
+                calendar.add(Calendar.DAY_OF_MONTH, Integer.parseInt(bestBefore)*30);
 
                 expDate = sdf.parse(sdf.format(calendar.getTime()));
 
@@ -197,9 +197,10 @@ public class DetailsActivity extends AppCompatActivity {
                 AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
                 //Calendar calendar = Calendar.getInstance();
-                calendar.set(Calendar.YEAR, expDate.getYear());
-                calendar.set(Calendar.MONTH, expDate.getMonth());
-                calendar.set(Calendar.DAY_OF_MONTH, expDate.getDate());
+                calendar.setTime(expDate);
+                calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR));
+                calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
+                calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_YEAR));
                 calendar.set(Calendar.HOUR_OF_DAY, 9);
                 calendar.set(Calendar.MINUTE, 0);
                 calendar.set(Calendar.SECOND, 0);
