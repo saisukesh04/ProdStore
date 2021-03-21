@@ -2,12 +2,13 @@ package com.spambytes.prodstore;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -20,19 +21,19 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.spambytes.prodstore.adapters.ItemAdapter;
+import com.spambytes.prodstore.database.ItemDatabase;
+import com.spambytes.prodstore.models.Item;
 
-import org.bson.Document;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
-import io.realm.mongodb.Credentials;
-import io.realm.mongodb.User;
-import io.realm.mongodb.mongo.MongoClient;
-import io.realm.mongodb.mongo.MongoCollection;
-import io.realm.mongodb.mongo.MongoDatabase;
+
+import static java.security.AccessController.getContext;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.imageAddButton) ImageView addButton;
     @BindView(R.id.logoutBtn) ImageView logoutBtn;
+    @BindView(R.id.listRecyclerView) RecyclerView listRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,14 +57,23 @@ public class MainActivity extends AppCompatActivity {
 
         app = new App(new AppConfiguration.Builder(AppID).build());
 
+        List<Item> items = ItemDatabase.getInstance(MainActivity.this).ItemDao().loadAllItems();
+
+        LinearLayoutManager mLayout = new LinearLayoutManager(MainActivity.this,LinearLayoutManager.VERTICAL,false);
+        ItemAdapter itemAdapter = new ItemAdapter(items);
+
+        listRecyclerView.setHasFixedSize(true);
+        listRecyclerView.setLayoutManager(mLayout);
+        listRecyclerView.setAdapter(itemAdapter);
+
         addButton.setOnClickListener(v -> {
 
             final Dialog dialog = new Dialog(this);
             dialog.setContentView(R.layout.manual_entry_dialog);
             Button findProductBtn = dialog.findViewById(R.id.findProductBtn);
-            barcodeEditText = dialog.findViewById(R.id.barcodeEditText);
             TextInputLayout barcodeLayout = dialog.findViewById(R.id.filledBarcodeTextField);
             ImageView scan_barcode = dialog.findViewById(R.id.scan_barcode);
+            barcodeEditText = dialog.findViewById(R.id.barcodeEditText);
             // if button is clicked, close the custom dialog
             findProductBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
