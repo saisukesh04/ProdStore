@@ -18,6 +18,8 @@ import com.spambytes.prodstore.models.Item;
 
 import java.util.List;
 
+import static com.spambytes.prodstore.MainActivity.no_items_text;
+
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     private Context context;
@@ -32,6 +34,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     public ItemAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
         View view = LayoutInflater.from(context).inflate(R.layout.item_card_layout, parent, false);
+        if (itemList.size() == 0){
+            no_items_text.setVisibility(View.VISIBLE);
+        }
         return new ViewHolder(view);
     }
 
@@ -39,8 +44,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ItemAdapter.ViewHolder holder, int position) {
         Item item = itemList.get(position);
         holder.itemName.setText(item.getItemName());
-        holder.expiryText.setText(item.getDateOfExpiry());
         holder.itemQuantityText.setText(String.valueOf(item.getQuantity()));
+        String date = String.valueOf(item.getDateOfExpiry());
+        String expiry = date.substring(0,10) + " " + date.substring(date.length() - 4);
+        holder.expiryText.setText(expiry);
         holder.main_item_card.setOnLongClickListener(view -> {
             new AlertDialog.Builder(context)
                     .setMessage("Are you sure you want to delete this entry?")
@@ -53,7 +60,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                     .show();
             return true;
         });
-
     }
 
     @Override

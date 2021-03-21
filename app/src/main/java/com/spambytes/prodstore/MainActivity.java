@@ -14,6 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -33,8 +34,6 @@ import io.realm.Realm;
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
 
-import static java.security.AccessController.getContext;
-
 public class MainActivity extends AppCompatActivity {
 
     public static App app;
@@ -45,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.imageAddButton) ImageView addButton;
     @BindView(R.id.logoutBtn) ImageView logoutBtn;
     @BindView(R.id.listRecyclerView) RecyclerView listRecyclerView;
+    public static TextView no_items_text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +65,10 @@ public class MainActivity extends AppCompatActivity {
         listRecyclerView.setHasFixedSize(true);
         listRecyclerView.setLayoutManager(mLayout);
         listRecyclerView.setAdapter(itemAdapter);
+
+        no_items_text = findViewById(R.id.no_items_text);
+        if(items.size() == 0)
+            no_items_text.setVisibility(View.VISIBLE);
 
         addButton.setOnClickListener(v -> {
 

@@ -48,6 +48,7 @@ import org.bson.Document;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -55,10 +56,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.mongodb.App;
 import io.realm.mongodb.Credentials;
+import io.realm.mongodb.RealmResultTask;
 import io.realm.mongodb.User;
 import io.realm.mongodb.mongo.MongoClient;
 import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
+import io.realm.mongodb.mongo.iterable.MongoCursor;
 
 import static com.spambytes.prodstore.MainActivity.app;
 
@@ -80,7 +83,6 @@ public class DetailsActivity extends AppCompatActivity {
     private boolean productExists;
     private ImageView imageView;
     private static final int REQUEST_CODE_STORAGE_PERMISSION = 1, REQUEST_CODE_SELECT_IMAGE = 2;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -239,11 +241,38 @@ public class DetailsActivity extends AppCompatActivity {
                                     Toast.makeText(DetailsActivity.this, "Added to database", Toast.LENGTH_LONG).show();
                                     Product product = new Product(Long.parseLong(barcodeText), productName, Integer.parseInt(bestBefore));
                                     ProductDatabase.getInstance(DetailsActivity.this).ProductDao().insertProduct(product);
+                                    updateItemCountMongo(mongoDatabase);
                                 }else {
                                     Toast.makeText(DetailsActivity.this, "Error: " + docResult.getError(), Toast.LENGTH_LONG).show();
-                                    Log.e("Info", docResult.getError().toString());
+                                    Log.e("Error", docResult.getError().toString());
                                 }
                             });
+                }
+            }
+        });
+    }
+
+    public void updateItemCountMongo(MongoDatabase mongoDatabase) {
+
+        MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("User_Item_List");
+        Document queryFilter = new Document().append("barcode","8906086572108");
+
+        RealmResultTask<MongoCursor<Document>> findTask = mongoCollection.find(queryFilter).iterator();
+        findTask.getAsync(task -> {
+            if(task.isSuccess()){
+
+                MongoCursor<Document> results = task.get();
+                if(results.hasNext()) {
+                    Document result = results.next();
+                    int count = Integer.parseInt(String.valueOf(result.get("count")));
+                    result.append("count", String.valueOf(count + 1));
+
+                    mongoCollection.updateOne(queryFilter, result).getAsync(result1 -> {
+                        if(result1.isSuccess())
+                            Log.e("Info","Updated");
+                        else
+                            Log.e("Error", result1.getError().toString());
+                    });
                 }
             }
         });
